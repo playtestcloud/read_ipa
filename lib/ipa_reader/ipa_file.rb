@@ -42,7 +42,9 @@ module IpaReader
     
     def icon_file
       if plist["CFBundleIconFiles"]
-        data = read_file(Regexp.new("#{plist["CFBundleIconFiles"][0]}$"))
+        retina_icon = plist["CFBundleIconFiles"].find { |el| el.end_with?("@2x.png") }
+        icon_path = retina_icon || plist["CFBundleIconFiles"][0]
+        data = read_file(Regexp.new("#{icon_path}$"))
       elsif plist["CFBundleIconFile"]
         data = read_file(Regexp.new("#{plist["CFBundleIconFile"]}$"))
       end

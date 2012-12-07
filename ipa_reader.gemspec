@@ -11,7 +11,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec)/})
   gem.name          = "ipa_reader"
   gem.require_paths = ["lib"]
-  gem.version       = "0.8.2"
+  gem.version       = "0.8.3"
 
   gem.add_dependency 'rubyzip', '~> 0.9.9'
   gem.add_dependency 'CFPropertyList', '2.1.1'

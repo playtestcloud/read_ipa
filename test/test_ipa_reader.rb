@@ -38,5 +38,7 @@ class IpaReaderTest < Test::Unit::TestCase
     assert_equal(false, @ipa_file.icon_prerendered)
   end
   
-  
+  def test_icon
+    assert_not_nil(@ipa_file.icon_file)
+  end
 end

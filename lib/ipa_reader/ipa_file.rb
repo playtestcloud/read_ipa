@@ -43,14 +43,18 @@ module IpaReader
     
     def icon_file
       if plist["CFBundleIconFiles"]
-        retina_icon = plist["CFBundleIconFiles"].find { |el| el.end_with?("@2x.png") }
-        icon_path = retina_icon || plist["CFBundleIconFiles"][0]
-        data = read_file(icon_path)
+        highest_res_icon = plist["CFBundleIconFiles"]
+          .map{ |icon|
+            data = read_file(icon)
+            IpaReader::PngFile.new(data)
+          }
+          .sort{ |a,b| b.width <=> a.width }
+          .first
+        highest_res_icon.raw_data
       elsif plist["CFBundleIconFile"]
         data = read_file(plist["CFBundleIconFile"])
-      end
-      if data
-        IpaReader::PngFile.normalize_png(data)
+        png = IpaReader::PngFile.new(data)
+        png.raw_data
       else
         nil
       end

@@ -57,7 +57,7 @@ module IpaReader
     end
     
     def mobile_provision_file
-      read_file("embedded.mobileprovision$")
+      read_file("embedded.mobileprovision")
     end
     
     def bundle_identifier

@@ -1,8 +1,8 @@
 begin
-  require 'zip'
+  require 'zip/zip'
 rescue LoadError
   require 'rubygems'
-  require 'zip'
+  require 'zip/zip'
 end
 
 module IpaReader
@@ -10,9 +10,10 @@ module IpaReader
     attr_accessor :plist, :file_path
     def initialize(file_path)
       self.file_path = file_path
-      info_plist_file = nil
-      Zip::ZipFile.foreach(file_path) { |f| info_plist_file = f if f.name.match(/\/Info.plist/) }
-      cf_plist = CFPropertyList::List.new(:data => self.read_file(/\/Info.plist/), :format => CFPropertyList::List::FORMAT_BINARY)
+      @app_folder = Zip::ZipFile.foreach(file_path).find { |e| /.*\.app\/$/ =~ e.to_s }.to_s
+      @zipfile = Zip::ZipFile.open(file_path)
+
+      cf_plist = CFPropertyList::List.new(:data => @zipfile.read(@app_folder + "Info.plist"), :format => CFPropertyList::List::FORMAT_BINARY)
       self.plist = cf_plist.value.to_rb
     end
     
@@ -44,9 +45,9 @@ module IpaReader
       if plist["CFBundleIconFiles"]
         retina_icon = plist["CFBundleIconFiles"].find { |el| el.end_with?("@2x.png") }
         icon_path = retina_icon || plist["CFBundleIconFiles"][0]
-        data = read_file(Regexp.new("#{icon_path}$"))
+        data = read_file(icon_path)
       elsif plist["CFBundleIconFile"]
-        data = read_file(Regexp.new("#{plist["CFBundleIconFile"]}$"))
+        data = read_file(plist["CFBundleIconFile"])
       end
       if data
         IpaReader::PngFile.normalize_png(data)
@@ -56,7 +57,7 @@ module IpaReader
     end
     
     def mobile_provision_file
-      read_file(/embedded\.mobileprovision$/)
+      read_file("embedded.mobileprovision$")
     end
     
     def bundle_identifier
@@ -67,11 +68,11 @@ module IpaReader
     def icon_prerendered
       plist["UIPrerenderedIcon"] == true
     end
-    
-    def read_file(regex)
-      file = nil
-      Zip::ZipFile.foreach(self.file_path) { |f| file = f if f.name.match(regex) }
-      file.get_input_stream.read
+
+    private
+
+    def read_file(entry)
+      @zipfile.read(@app_folder + entry)
     end
   end
 end

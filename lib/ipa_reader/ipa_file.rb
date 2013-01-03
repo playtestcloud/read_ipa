@@ -59,6 +59,14 @@ module IpaReader
         nil
       end
     end
+
+    def executable_file_name
+      plist["CFBundleExecutable"]
+    end
+
+    def executable_file
+      read_file(executable_file_name)
+    end
     
     def mobile_provision_file
       read_file("embedded.mobileprovision")

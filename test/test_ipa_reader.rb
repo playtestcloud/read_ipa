@@ -1,5 +1,6 @@
 require File.dirname(__FILE__) + '/../lib/ipa_reader'
 require 'test/unit'
+require 'digest'
 
 class IpaReaderTest < Test::Unit::TestCase
   def setup
@@ -41,5 +42,14 @@ class IpaReaderTest < Test::Unit::TestCase
   def test_icon
     assert_equal("56b1eecad1cb7046b2e944dcd90fa74b77187f2cb4c766d7bb328ad86c37ca04",
                  Digest::SHA256::hexdigest(@ipa_file.icon_file))
+  end
+
+  def test_executable_file_name
+    assert_equal("MultiG", @ipa_file.executable_file_name)
+  end
+
+  def test_executable_file
+    assert_equal("227e5272684846d7c8193dbe0995a2df62314d11a069608831f5d38d51ee9c7a",
+                 Digest::SHA256::hexdigest(@ipa_file.executable_file))
   end
 end

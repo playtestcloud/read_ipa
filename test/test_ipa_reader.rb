@@ -39,6 +39,7 @@ class IpaReaderTest < Test::Unit::TestCase
   end
   
   def test_icon
-    assert_not_nil(@ipa_file.icon_file)
+    assert_equal("56b1eecad1cb7046b2e944dcd90fa74b77187f2cb4c766d7bb328ad86c37ca04",
+                 Digest::SHA256::hexdigest(@ipa_file.icon_file))
   end
 end

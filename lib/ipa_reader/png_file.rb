@@ -6,23 +6,32 @@ module IpaReader
     attr_accessor :raw_data, :width, :height
 
     def initialize(oldPNG)
+      begin
+        self.raw_data = extract_apple_png(oldPNG)
+      rescue
+       self.width, self.height = oldPNG[0x10..0x18].unpack('NN')
+       self.raw_data = oldPNG
+      end
+    end
+
+    def extract_apple_png(oldPNG)
       pngheader = "\x89PNG\r\n\x1a\n"
 
       if oldPNG[0...8] != pngheader
         return nil
       end
-    
+
       newPNG = oldPNG[0...8]
-  
+
       chunkPos = newPNG.length
 
       idatAcc = ""
       breakLoop = false
-  
+
       # For each chunk in the PNG file
       while chunkPos < oldPNG.length
         skip = false
-        
+
         # Reading chunk
         chunkLength = oldPNG[chunkPos...chunkPos+4]
         chunkLength = chunkLength.unpack("N")[0]
@@ -45,7 +54,7 @@ module IpaReader
           skip = true
         end
 
-        # Removing CgBI chunk 
+        # Removing CgBI chunk
         if chunkType == "CgBI"
           skip = true
         end
@@ -57,13 +66,13 @@ module IpaReader
           chunkData = inf.inflate(idatAcc)
           inf.finish
           inf.close
-  
+
           chunkType = "IDAT"
 
           # Swapping red & blue bytes for each pixel
           newdata = ""
-      
-          self.height.times do 
+
+          self.height.times do
             i = newdata.length
             newdata += chunkData[i..i].to_s
             self.width.times do
@@ -95,10 +104,10 @@ module IpaReader
         end
 
         break if breakLoop
-        
       end
-   
-      self.raw_data = newPNG
+
+      return newPNG
     end
+
   end
 end

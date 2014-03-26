@@ -13,7 +13,7 @@ module IpaReader
       @app_folder = Zip::ZipFile.foreach(file_path).find { |e| /.*\.app\/$/ =~ e.to_s }.to_s
       @zipfile = Zip::ZipFile.open(file_path)
 
-      cf_plist = CFPropertyList::List.new(:data => @zipfile.read(@app_folder + "Info.plist"), :format => CFPropertyList::List::FORMAT_BINARY)
+      cf_plist = CFPropertyList::List.new(:data => @zipfile.read(@app_folder + "Info.plist"), :format => CFPropertyList::List::FORMAT_AUTO)
       self.plist = cf_plist.value.to_rb
     end
     

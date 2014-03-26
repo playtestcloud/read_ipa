@@ -6,18 +6,22 @@ module IpaReader
     attr_accessor :raw_data, :width, :height
 
     def initialize(oldPNG)
-      begin
+      # begin
         self.raw_data = extract_apple_png(oldPNG)
-      rescue
-       self.width, self.height = oldPNG[0x10..0x18].unpack('NN')
-       self.raw_data = oldPNG
-      end
+      # rescue
+      #  self.width, self.height = oldPNG[0x10..0x18].unpack('NN')
+      #  self.raw_data = oldPNG
+      # end
     end
 
     def extract_apple_png(oldPNG)
-      pngheader = "\x89PNG\r\n\x1a\n"
+      pngheader = "\x89PNG\r\n\x1A\n".b
 
       if oldPNG[0...8] != pngheader
+        pp pngheader
+        pp pngheader.encoding
+        pp oldPNG[0...8]
+        pp oldPNG[0...8].encoding
         return nil
       end
 
@@ -25,7 +29,7 @@ module IpaReader
 
       chunkPos = newPNG.length
 
-      idatAcc = ""
+      idatAcc = "".b
       breakLoop = false
 
       # For each chunk in the PNG file
@@ -42,35 +46,35 @@ module IpaReader
         chunkPos += chunkLength + 12
 
         # Parsing the header chunk
-        if chunkType == "IHDR"
+        if chunkType == "IHDR".b
           self.width = chunkData[0...4].unpack("N")[0]
           self.height = chunkData[4...8].unpack("N")[0]
         end
     
         # Parsing the image chunk
-        if chunkType == "IDAT"
+        if chunkType == "IDAT".b
           # Store the chunk data for later decompression
           idatAcc += chunkData
           skip = true
         end
 
         # Removing CgBI chunk
-        if chunkType == "CgBI"
+        if chunkType == "CgBI".b
           skip = true
         end
 
         # Stopping the PNG file parsing
-        if chunkType == "IEND"
+        if chunkType == "IEND".b
           # Uncompressing the image chunk
           inf = Zlib::Inflate.new(-Zlib::MAX_WBITS)
           chunkData = inf.inflate(idatAcc)
           inf.finish
           inf.close
 
-          chunkType = "IDAT"
+          chunkType = "IDAT".b
 
           # Swapping red & blue bytes for each pixel
-          newdata = ""
+          newdata = "".b
 
           self.height.times do
             i = newdata.length

@@ -1,4 +1,5 @@
 .DS_Store
 pkg
 .ruby-version
+ipa_reader*.gem
 Gemfile.lock

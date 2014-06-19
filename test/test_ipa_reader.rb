@@ -57,4 +57,12 @@ class IpaReaderTest < Test::Unit::TestCase
     assert_equal("227e5272684846d7c8193dbe0995a2df62314d11a069608831f5d38d51ee9c7a",
                  Digest::SHA256::hexdigest(@ipa_file.executable_file))
   end
+
+  def test_for_iphone
+    assert_equal(true, @ipa_file.for_iphone?)
+  end
+
+  def test_for_ipad
+    assert_equal(true, @ipa_file.for_ipad?)
+  end
 end

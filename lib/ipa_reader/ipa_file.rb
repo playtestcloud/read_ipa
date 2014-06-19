@@ -84,6 +84,14 @@ module IpaReader
       plist["UIPrerenderedIcon"] == true
     end
 
+    def for_ipad?
+      plist["UIDeviceFamily"] && (plist["UIDeviceFamily"] == 2 || plist["UIDeviceFamily"].include?(2))
+    end
+
+    def for_iphone?
+      !plist["UIDeviceFamily"] || plist["UIDeviceFamily"] == 1 || plist["UIDeviceFamily"].include?(1)
+    end
+
     private
 
     def read_file(entry)

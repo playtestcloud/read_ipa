@@ -1,44 +1,39 @@
-# ipa_reader
-
-by [Nicholas Schlueter](http://twitter.com/schlu)
-
-## DESCRIPTION
+# read_ipa [![Build Status](https://travis-ci.org/playtestcloud/read_ipa.png?branch=master)](https://travis-ci.org/playtestcloud/read_ipa) [![Gem Version](https://badge.fury.io/rb/read_ipa.png)](http://badge.fury.io/rb/read_ipa)
 
 Reads metadata form iPhone Package Archive Files (ipa).
-
-I am using this gem to get version to build the over the air iPhone Ad Hoc distribution plist file.
 
 ## USAGE
 
 ```bash
 irb > require 'rubygems'
- => true 
-irb > require 'ipa_reader'
- => true 
-irb > ipa_file = IpaReader::IpaFile.new("/path/to/file.ipa")
- => #<IpaReader::IpaFile:0x1012a9458>
+ => true
+irb > require 'read_ipa'
+ => true
+irb > ipa_file = ReadIpa::IpaFile.new("/path/to/file.ipa")
+ => #<ReadIpa::IpaFile:0x1012a9458>
 irb > ipa_file.version
- => "1.2.2.4" 
+ => "1.2.2.4"
 irb > ipa_file.name
- => "MultiG" 
+ => "MultiG"
 irb > ipa_file.target_os_version
- => "4.1" 
+ => "4.1"
 irb > ipa_file.minimum_os_version
- => "3.1" 
+ => "3.1"
 irb > ipa_file.url_schemes
- => [] 
+ => []
 irb > ipa_file.bundle_identifier
- => "com.dcrails.multig" 
+ => "com.dcrails.multig"
 irb > ipa_file.icon_prerendered
  => false
 ```
 
 ## INSTALL
 
-`gem install ipa_reader`
+`gem install read_ipa`
 
 ## Contributors
 
+* [@schlu](//github.com/schlu)
 * [@yayanet](//github.com/yayanet)
 * [@mwhuss](//github.com/mwhuss)
 

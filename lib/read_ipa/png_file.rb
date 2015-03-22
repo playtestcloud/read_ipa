@@ -1,7 +1,7 @@
 # direct port of python code at https://gist.github.com/4141831#file_ipin.py
 require 'zlib'
 
-module IpaReader
+module ReadIpa
   class PngFile
     attr_accessor :raw_data, :width, :height
 
@@ -18,10 +18,6 @@ module IpaReader
       pngheader = "\x89PNG\r\n\x1A\n".b
 
       if oldPNG[0...8] != pngheader
-        pp pngheader
-        pp pngheader.encoding
-        pp oldPNG[0...8]
-        pp oldPNG[0...8].encoding
         return nil
       end
 
@@ -50,7 +46,7 @@ module IpaReader
           self.width = chunkData[0...4].unpack("N")[0]
           self.height = chunkData[4...8].unpack("N")[0]
         end
-    
+
         # Parsing the image chunk
         if chunkType == "IDAT".b
           # Store the chunk data for later decompression

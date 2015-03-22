@@ -88,11 +88,16 @@ module ReadIpa
     end
 
     def for_ipad?
-      plist["UIDeviceFamily"] && (plist["UIDeviceFamily"] == 2 || plist["UIDeviceFamily"].include?(2))
+      return true if plist["UIDeviceFamily"] && (plist["UIDeviceFamily"] == 2 || plist["UIDeviceFamily"].include?(2))
+      return true if plist["UIDeviceFamily"] && (plist["UIDeviceFamily"] == "2" || plist["UIDeviceFamily"].include?("2"))
+      return false
     end
 
     def for_iphone?
-      !plist["UIDeviceFamily"] || plist["UIDeviceFamily"] == 1 || plist["UIDeviceFamily"].include?(1)
+      return true if !plist["UIDeviceFamily"]
+      return true if plist["UIDeviceFamily"] == 1 || plist["UIDeviceFamily"].include?(1)
+      return true if plist["UIDeviceFamily"] == "1" || plist["UIDeviceFamily"].include?("1")
+      return false
     end
 
     private

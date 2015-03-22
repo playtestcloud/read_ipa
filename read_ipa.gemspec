@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
   s.test_files    = ['test/test_read_ipa.rb']
 
+  s.add_development_dependency 'rake'
   s.add_development_dependency 'minitest'
 
   s.add_runtime_dependency 'rubyzip', '~> 0.9.9'

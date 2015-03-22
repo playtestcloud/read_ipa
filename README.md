@@ -27,6 +27,13 @@ irb > ipa_file.icon_prerendered
  => false
 ```
 
+## Supported ruby versions
+
+* 1.9 **NOT SUPPORTED**
+* 2.0
+* 2.1
+* 2.2
+
 ## INSTALL
 
 `gem install read_ipa`

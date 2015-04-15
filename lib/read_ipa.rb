@@ -13,7 +13,7 @@ module ReadIpa
     attr_accessor :plist, :file_path
     def initialize(file_path)
       self.file_path = file_path
-      @app_folder = Zip::ZipFile.foreach(file_path).find { |e| /.*\.app\/$/ =~ e.to_s }.to_s
+      @app_folder = Zip::ZipFile.foreach(file_path).find { |e| /.*\.app\/Info\.plist$/ =~ e.to_s }.to_s.gsub(/Info\.plist$/, '')
       @zipfile = Zip::ZipFile.open(file_path)
 
       cf_plist = CFPropertyList::List.new(data: @zipfile.read(@app_folder + "Info.plist"), format: CFPropertyList::List::FORMAT_AUTO)

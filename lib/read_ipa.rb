@@ -6,7 +6,7 @@ rescue LoadError
 end
 
 require 'read_ipa/plist_binary'
-require 'read_ipa/png_file'
+require 'apple_png'
 
 module ReadIpa
   class IpaFile
@@ -53,15 +53,15 @@ module ReadIpa
         highest_res_icon = plist["CFBundleIconFiles"]
           .map{ |icon|
             data = read_file(icon)
-            ReadIpa::PngFile.new(data)
+            ApplePng.new(data)
           }
           .sort{ |a,b| b.width <=> a.width }
           .first
-        highest_res_icon.raw_data
+        highest_res_icon.data
       elsif plist["CFBundleIconFile"]
         data = read_file(plist["CFBundleIconFile"])
-        png = ReadIpa::PngFile.new(data)
-        png.raw_data
+        png = ApplePng.new(data)
+        png.data
       else
         nil
       end

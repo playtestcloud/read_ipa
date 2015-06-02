@@ -18,4 +18,5 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'rubyzip', '~> 0.9.9'
   s.add_runtime_dependency 'CFPropertyList', '= 2.1.1'
+  s.add_runtime_dependency 'apple_png', '~> 0.1.3'
 end

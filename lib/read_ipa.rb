@@ -7,6 +7,7 @@ end
 
 require 'read_ipa/plist_binary'
 require 'apple_png'
+require 'chunky_png'
 
 module ReadIpa
   class IpaFile
@@ -48,12 +49,37 @@ module ReadIpa
       end
     end
 
+    def read_png(data)
+      begin
+        return ApplePng.new(data)
+      rescue NotValidApplePngError
+        return ChunkyPng::Image.from_datastream(data)
+      end
+    end
+
+    def get_highest_res_icon(icons_array)
+      highest_res_icon = icons_array
+        .map{ |icon_path| icon_path.downcase.end_with?('.png') ? icon_path : icon_path + '.png' }
+        .map{ |icon_path| read_file(icon_path) }
+        .max_by{|data| read_png(data).width }
+
+      begin
+        return ApplePng.new(highest_res_icon).data
+      rescue NotValidApplePngError
+        highest_res_icon
+      end
+    end
+
     def icon_file
       if plist["CFBundleIconFiles"]
-        highest_res_icon = plist["CFBundleIconFiles"]
-          .map{ |icon_path| ApplePng.new(read_file(icon_path)) }
-          .max_by(&:width)
-        highest_res_icon.data
+        get_highest_res_icon(plist["CFBundleIconFiles"])
+      elsif plist["CFBundleIcons"]
+        dict = plist["CFBundleIcons"]
+        primary_icons = dict["CFBundlePrimaryIcon"]
+        return nil unless primary_icons
+        icons = primary_icons.to_rb["CFBundleIconFiles"]
+        return nil unless icons
+        get_highest_res_icon(icons)
       elsif plist["CFBundleIconFile"]
         data = read_file(plist["CFBundleIconFile"])
         png = ApplePng.new(data)

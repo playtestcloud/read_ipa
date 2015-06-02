@@ -51,12 +51,8 @@ module ReadIpa
     def icon_file
       if plist["CFBundleIconFiles"]
         highest_res_icon = plist["CFBundleIconFiles"]
-          .map{ |icon|
-            data = read_file(icon)
-            ApplePng.new(data)
-          }
-          .sort{ |a,b| b.width <=> a.width }
-          .first
+          .map{ |icon_path| ApplePng.new(read_file(icon_path)) }
+          .max_by(&:width)
         highest_res_icon.data
       elsif plist["CFBundleIconFile"]
         data = read_file(plist["CFBundleIconFile"])

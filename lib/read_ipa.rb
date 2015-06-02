@@ -58,13 +58,15 @@ module ReadIpa
     end
 
     def get_highest_res_icon(icons_file_names)
-      highest_res_icon = icons_file_names
+      icon_names = icons_file_names
         .map{ |icon_path| find_existing_path(icon_path) }
         .compact
         .uniq(&:name)
+      highest_res_icon = icon_names
         .map{|entry| entry.get_input_stream.read}
         .max_by{|data| read_png(data).width }
 
+      return nil if highest_res_icon.nil?
       begin
         return ApplePng.new(highest_res_icon).data
       rescue NotValidApplePngError
@@ -73,22 +75,17 @@ module ReadIpa
     end
 
     def icon_file
-      if plist["CFBundleIconFiles"]
-        get_highest_res_icon(plist["CFBundleIconFiles"])
-      elsif plist["CFBundleIcons"]
+      icon_files = [plist["CFBundleIconFile"]].compact
+      icon_files += plist["CFBundleIconFiles"] || []
+      if plist["CFBundleIcons"]
         dict = plist["CFBundleIcons"]
         primary_icons = dict["CFBundlePrimaryIcon"]
         return nil unless primary_icons
         icons = primary_icons.to_rb["CFBundleIconFiles"]
         return nil unless icons
-        get_highest_res_icon(icons)
-      elsif plist["CFBundleIconFile"]
-        data = read_file(plist["CFBundleIconFile"])
-        png = ApplePng.new(data)
-        png.data
-      else
-        nil
+        icon_files += icons
       end
+      get_highest_res_icon(icon_files)
     end
 
     def executable_file_name

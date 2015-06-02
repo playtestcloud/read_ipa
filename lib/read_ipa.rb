@@ -53,7 +53,7 @@ module ReadIpa
       begin
         return ApplePng.new(data)
       rescue NotValidApplePngError
-        return ChunkyPng::Image.from_datastream(data)
+        return ChunkyPng::Image.from_datastream(ChunkyPNG::Datastream.from_blob(data))
       end
     end
 

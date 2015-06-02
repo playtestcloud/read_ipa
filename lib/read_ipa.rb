@@ -57,10 +57,12 @@ module ReadIpa
       end
     end
 
-    def get_highest_res_icon(icons_array)
-      highest_res_icon = icons_array
-        .map{ |icon_path| icon_path.downcase.end_with?('.png') ? icon_path : icon_path + '.png' }
-        .map{ |icon_path| read_file(icon_path) }
+    def get_highest_res_icon(icons_file_names)
+      highest_res_icon = icons_file_names
+        .map{ |icon_path| find_existing_path(icon_path) }
+        .compact
+        .uniq(&:name)
+        .map{|entry| entry.get_input_stream.read}
         .max_by{|data| read_png(data).width }
 
       begin
@@ -120,6 +122,12 @@ module ReadIpa
       return true if plist["UIDeviceFamily"] == 1 || plist["UIDeviceFamily"].include?(1)
       return true if plist["UIDeviceFamily"] == "1" || plist["UIDeviceFamily"].include?("1")
       return false
+    end
+
+    def find_existing_path(icon_path)
+      without_extension = icon_path.gsub(/\.png$/i, '')
+      regex = /#{Regexp.quote(@app_folder)}#{Regexp.quote(without_extension)}[(\.png)@~]/
+      @zipfile.entries.find{|e| e.name =~ regex}
     end
 
     private

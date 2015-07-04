@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.description   = "Extract metadata from iOS packages such as the app name, the app icons or the binary file. This is a diverging fork of github.com/schlu/Ipa-Reader."
   s.authors       = ['Marvin Killing']
   s.email         = 'marvinkilling@gmail.com'
-  s.files         = ['README.md', 'Rakefile', 'lib/read_ipa.rb', 'lib/read_ipa/plist_binary.rb']
+  s.files         = ['README.md', 'Rakefile', 'lib/read_ipa.rb'] + Dir.glob("lib/read_ipa/*.rb")
   s.homepage      = 'https://github.com/playtestcloud/read_ipa'
   s.require_paths = ['lib']
   s.test_files    = ['test/test_read_ipa.rb']

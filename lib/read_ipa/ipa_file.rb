@@ -2,7 +2,7 @@ require 'zip/zip'
 require 'read_ipa/plist_binary'
 require 'apple_png'
 require 'chunky_png'
-require 'CFPropertyList'
+require 'cfpropertylist'
 
 module ReadIpa
   class IpaFile

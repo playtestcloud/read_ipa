@@ -1,4 +1,4 @@
-require 'zip/zip'
+require 'zip'
 require 'read_ipa/plist_binary'
 require 'apple_png'
 require 'chunky_png'
@@ -9,8 +9,16 @@ module ReadIpa
     attr_accessor :plist, :file_path
     def initialize(file_path)
       self.file_path = file_path
-      @app_folder = Zip::ZipFile.foreach(file_path).find { |e| /.*\.app\/Info\.plist$/ =~ e.to_s }.to_s.gsub(/Info\.plist$/, '')
-      @zipfile = Zip::ZipFile.open(file_path)
+      @zipfile = Zip::File.open(file_path)
+      @zipfile.each do |entry|
+        if /.*\.app\/Info\.plist$/ =~ entry.to_s
+          @app_folder = entry.to_s.gsub(/Info\.plist$/, '')
+          break
+        end
+      end
+      if @app_folder.nil?
+        raise "Could not identify Main app Folder"
+      end
 
       plist_str = @zipfile.read(@app_folder + "Info.plist")
       @info_plist = InfoPlist.new(plist_str)

@@ -61,15 +61,22 @@ module ReadIpa
     end
 
     def for_ipad?
-      return true if @plist["UIDeviceFamily"] && (@plist["UIDeviceFamily"] == 2 || @plist["UIDeviceFamily"].include?(2))
-      return true if @plist["UIDeviceFamily"] && (@plist["UIDeviceFamily"] == "2" || @plist["UIDeviceFamily"].include?("2"))
+      return false if @plist["UIDeviceFamily"].nil?
+      if @plist["UIDeviceFamily"].kind_of?(Array)
+        return true if @plist["UIDeviceFamily"] && (@plist["UIDeviceFamily"].include?(2) || @plist["UIDeviceFamily"].include?("2"))
+      else
+        return true if @plist["UIDeviceFamily"] && (@plist["UIDeviceFamily"] == 2 || @plist["UIDeviceFamily"] == "2")
+      end
       return false
     end
 
     def for_iphone?
-      return true if @plist["UIDeviceFamily"]
-      return true if @plist["UIDeviceFamily"] == 1 || @plist["UIDeviceFamily"].include?(1)
-      return true if @plist["UIDeviceFamily"] == "1" || @plist["UIDeviceFamily"].include?("1")
+      return true if @plist["UIDeviceFamily"].nil?
+      if @plist["UIDeviceFamily"].kind_of?(Array)
+        return true if @plist["UIDeviceFamily"].include?(1) || @plist["UIDeviceFamily"].include?("1")
+      else
+        return true if @plist["UIDeviceFamily"] == 1 || @plist["UIDeviceFamily"] == "1"
+      end
       return false
     end
   end

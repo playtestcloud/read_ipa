@@ -5,6 +5,10 @@ class InfoPlistTest < Minitest::Test
   def setup
     str = File.read(File.dirname(__FILE__) + '/Info.plist')
     @info_plist = ReadIpa::InfoPlist.new(str)
+    ipad_only_str = File.read(File.dirname(__FILE__) + '/IpadOnlyInfo.plist')
+    @ipad_only_info_plist = ReadIpa::InfoPlist.new(ipad_only_str)
+    iphone_only_str = File.read(File.dirname(__FILE__) + '/IphoneOnlyInfo.plist')
+    @iphone_only_info_plist = ReadIpa::InfoPlist.new(iphone_only_str)
   end
 
   def test_version
@@ -48,7 +52,15 @@ class InfoPlistTest < Minitest::Test
     assert_equal(true, @info_plist.for_iphone?)
   end
 
+  def test_not_for_iphone
+    assert_equal(false, @ipad_only_info_plist.for_iphone?)
+  end
+
   def test_for_ipad
     assert_equal(true, @info_plist.for_ipad?)
+  end
+
+  def test_not_for_ipad
+    assert_equal(false, @iphone_only_info_plist.for_ipad?)
   end
 end

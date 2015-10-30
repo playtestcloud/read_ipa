@@ -10,17 +10,8 @@ module ReadIpa
     def initialize(file_path)
       self.file_path = file_path
       @zipfile = Zip::File.open(file_path)
-      @zipfile.each do |entry|
-        if /.*\.app\/Info\.plist$/ =~ entry.to_s
-          @app_folder = entry.to_s.gsub(/Info\.plist$/, '')
-          break
-        end
-      end
-      if @app_folder.nil?
-        raise "Could not identify Main app Folder"
-      end
-
-      plist_str = @zipfile.read(@app_folder + "Info.plist")
+      @app_folder = get_app_folder
+      plist_str = @zipfile.read(@app_folder + 'Info.plist')
       @info_plist = InfoPlist.new(plist_str)
 
       cf_plist = CFPropertyList::List.new(data: plist_str, format: CFPropertyList::List::FORMAT_AUTO)
@@ -86,6 +77,15 @@ module ReadIpa
 
     def executable_file
       read_file(executable_file_name)
+    end
+
+    def get_app_folder
+      @zipfile.each do |entry|
+        if /.*\.app\/Info\.plist$/ =~ entry.to_s
+          return entry.to_s.gsub(/Info\.plist$/, '')
+        end
+      end
+      raise "Could not identify Main app Folder"
     end
 
     def mobile_provision_file

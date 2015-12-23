@@ -45,7 +45,7 @@ class IpaFileTest < Minitest::Test
   end
 
   def test_icon
-    assert_equal("56b1eecad1cb7046b2e944dcd90fa74b77187f2cb4c766d7bb328ad86c37ca04",
+    assert_equal("3e4ed7f5a30280009fac972f8d4c90d2a91f46b94e7d687a20b8bfedad5ab62a",
                  Digest::SHA256::hexdigest(@ipa_file.icon_file))
   end
 

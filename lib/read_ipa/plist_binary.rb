@@ -24,7 +24,7 @@ module CFPropertyList
   class CFArray
     def to_hash
       hash_data = []
-      value.each do |obj|
+      value.compact.each do |obj|
         hash_data << obj.to_hash
       end
       hash_data

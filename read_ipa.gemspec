@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
   s.name          = 'read_ipa'
-  s.version       = '0.5.1'
+  s.version       = '1.0.0'
   s.licenses      = ['MIT']
   s.summary       = 'Read metadata from iOS IPA package files'
   s.description   = "Extract metadata from iOS packages such as the app name, the app icons or the binary file. This is a diverging fork of github.com/schlu/Ipa-Reader."
@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake'
   s.add_development_dependency 'minitest'
 
-  s.add_runtime_dependency 'rubyzip', '~> 0.9.9'
+  s.add_runtime_dependency 'rubyzip', '>= 1.0'
   s.add_runtime_dependency 'CFPropertyList', '= 2.1.1'
   s.add_runtime_dependency 'apple_png', '>= 0.3.0'
   s.add_runtime_dependency 'chunky_png', '~> 1.3'

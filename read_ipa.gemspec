@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'minitest'
 
   s.add_runtime_dependency 'rubyzip', '>= 1.0'
-  s.add_runtime_dependency 'CFPropertyList', '= 2.1.1'
+  s.add_runtime_dependency 'CFPropertyList', '~> 2.1'
   s.add_runtime_dependency 'apple_png', '>= 0.3.0'
   s.add_runtime_dependency 'chunky_png', '~> 1.3'
   s.add_runtime_dependency 'oily_png', '~> 1.2'

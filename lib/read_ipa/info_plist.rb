@@ -19,19 +19,15 @@ module ReadIpa
     end
 
     def target_os_version
-      @plist["DTPlatformVersion"].match(/[\d\.]*/)[0]
+      @plist["DTPlatformVersion"]&.match(/[\d\.]*/)&.first
     end
 
     def minimum_os_version
-      @plist["MinimumOSVersion"].match(/[\d\.]*/)[0]
+      @plist["MinimumOSVersion"]&.match(/[\d\.]*/)&.first
     end
 
     def url_schemes
-      if @plist["CFBundleURLTypes"] && @plist["CFBundleURLTypes"][0] && @plist["CFBundleURLTypes"][0]["CFBundleURLSchemes"]
-        @plist["CFBundleURLTypes"][0]["CFBundleURLSchemes"]
-      else
-        []
-      end
+      @plist.dig('CFBundleURLTypes', 0, 'CFBundleURLSchemes') || []
     end
 
     def icon_files

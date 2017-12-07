@@ -19,11 +19,11 @@ module ReadIpa
     end
 
     def target_os_version
-      @plist["DTPlatformVersion"]&.match(/[\d\.]*/)&.first
+      @plist["DTPlatformVersion"].match(/[\d\.]*/)[0] if @plist["DTPlatformVersion"]
     end
 
     def minimum_os_version
-      @plist["MinimumOSVersion"]&.match(/[\d\.]*/)&.first
+      @plist["MinimumOSVersion"].match(/[\d\.]*/)[0] if @plist["MinimumOSVersion"]
     end
 
     def url_schemes

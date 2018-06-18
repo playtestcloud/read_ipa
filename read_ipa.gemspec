@@ -13,12 +13,12 @@ Gem::Specification.new do |s|
   s.test_files    = ['test/test_read_ipa.rb']
   s.required_ruby_version = '~> 2.3'
 
-  s.add_development_dependency 'rake'
   s.add_development_dependency 'minitest'
+  s.add_development_dependency 'rake'
 
-  s.add_runtime_dependency 'rubyzip', '>= 1.0'
-  s.add_runtime_dependency 'CFPropertyList', '~> 2.1'
   s.add_runtime_dependency 'apple_png', '>= 0.3.0'
+  s.add_runtime_dependency 'CFPropertyList', '~> 3.0'
   s.add_runtime_dependency 'chunky_png', '~> 1.3'
   s.add_runtime_dependency 'oily_png', '~> 1.2'
+  s.add_runtime_dependency 'rubyzip', '>= 1.0'
 end

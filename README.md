@@ -29,7 +29,8 @@ irb > ipa_file.icon_prerendered
 
 ## Supported ruby versions
 
-* >= 2.3.0
+* \>= 2.3.0
+* \>= 3.0.0
 
 ## INSTALL
 

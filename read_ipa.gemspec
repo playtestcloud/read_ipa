@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.homepage      = 'https://github.com/playtestcloud/read_ipa'
   s.require_paths = ['lib']
   s.test_files    = ['test/test_read_ipa.rb']
-  s.required_ruby_version = '~> 2.3'
+  s.required_ruby_version = '>= 2.3'
 
   s.add_development_dependency 'minitest'
   s.add_development_dependency 'rake'

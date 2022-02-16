@@ -2,3 +2,4 @@
 pkg
 read_ipa*.gem
 Gemfile.lock
+coverage/

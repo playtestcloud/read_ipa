@@ -25,6 +25,8 @@ irb > ipa_file.bundle_identifier
  => "com.dcrails.multig"
 irb > ipa_file.icon_prerendered
  => false
+irb > ipa_file.get_property('CFBundleDisplayName')
+ => "MultiG"
 ```
 
 ## Supported ruby versions

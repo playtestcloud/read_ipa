@@ -75,5 +75,9 @@ module ReadIpa
       end
       return false
     end
+
+    def get_property(property_name)
+      @plist.fetch(property_name, nil)
+    end
   end
 end

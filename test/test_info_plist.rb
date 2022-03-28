@@ -63,4 +63,12 @@ class InfoPlistTest < Minitest::Test
   def test_not_for_ipad
     assert_equal(false, @iphone_only_info_plist.for_ipad?)
   end
+
+  def test_get_property
+    assert_equal(@info_plist.get_property('CFBundleExecutable'), "MultiG" )
+  end
+
+  def test_get_property_nil
+    assert_nil(@info_plist.get_property('CFBundleNameNil'))
+  end
 end

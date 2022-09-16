@@ -1,3 +1,4 @@
+require 'active_support/core_ext/object'
 require 'cfpropertylist'
 
 module ReadIpa
@@ -15,7 +16,7 @@ module ReadIpa
     end
 
     def name
-      @plist["CFBundleDisplayName"]
+      @plist["CFBundleDisplayName"].presence || @plist["CFBundleName"]
     end
 
     def target_os_version
